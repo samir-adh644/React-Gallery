@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {useState,useEffect} from 'react'
+import Cards from './components/Cards.jsx';
 
 
 function App() {
@@ -12,28 +13,22 @@ function App() {
     const response = await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=10`)
     setUserData(response.data)
   }
+
+
   useEffect(function(){
     getData()
   },[index])
 
-  let printUserData ="Loading"
+
+  let printUserData = <h3 className='text-gray-300 text-xs absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold'>Loading...</h3>
+
+
   if (userData.length>0){
     printUserData= userData.map((elem,idx)=>{
 
       return <div key ={idx}>
-      
-      <a href={elem.url} target='_blank'>
-          <div className="image h-40 w-44 overflow-hidden bg-white rounded-xl">
-          <img  className="h-full w-full object-cover" src={elem.download_url} alt="" />
-          <div className="name">
-            <h1 className='font-bold text-white'>{elem.author}</h1>
-          </div>
-      </div>
-      </a>
-
+          <Cards elem={elem}/>
     </div>
-    
-
     })
   }
 
@@ -50,6 +45,7 @@ function App() {
 
         <div className='flex justify-center items-center p-4'>
           < button 
+          style={{opacity:index == 1? 0.6 :1}}
           onClick={()=>{
             if (index>1){
               setUserData([]);
