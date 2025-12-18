@@ -5,15 +5,16 @@ import {useState,useEffect} from 'react'
 function App() {
 
   const [userData,setUserData]=useState([]);
+  const [index , setIndex]=useState(1)
 
 
   const getData = async ()=>{
-    const response = await axios.get('https://picsum.photos/v2/list?page=2&limit=30')
+    const response = await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=10`)
     setUserData(response.data)
   }
   useEffect(function(){
     getData()
-  },[])
+  },[index])
 
   let printUserData ="No images Available"
   if (userData.length>0){
@@ -42,9 +43,24 @@ function App() {
     <div className="main bg-black text-white h-screen p-4  overflow-auto">
 
      
-
+        <h1 className='bg-red-500 text-white text-6xl fixed'>{index}</h1>
         <div className="seconddiv flex flex-wrap gap-4">
           {printUserData}
+        </div>
+
+        <div className='flex justify-center items-center p-4'>
+          < button 
+          onClick={()=>{
+            if (index>1){
+                setIndex(index-1)
+                        }
+          }}
+          className='bg-amber-400 text-black rounded m-4 px-4 py-4 font-semibold cursor-pointer active:scale-95'>Prev</ button>
+          < button 
+          onClick={()=>{
+              setIndex(index+1)
+          }}
+          className='bg-amber-400 text-black rounded m-4 px-4 py-4 font-semibold cursor-pointer active:scale-95'> Next </button>
         </div>
 
       </div>
